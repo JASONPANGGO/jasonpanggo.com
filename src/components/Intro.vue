@@ -1,6 +1,6 @@
 <template>
   <div class="center-container">
-    <div class="intro" ref="followTarget"  :style="{transform:rotate}">
+    <div class="intro" ref="followTarget" :style="{transform:rotate}">
       <div class="nameImg">
         <img
           src="../assets/jasonpang.png"
@@ -50,21 +50,27 @@ export default {
         }
       ],
       motto: "Design, Code, & Photography",
-      rotate:''
+      rotate: "",
+      b: "beta",
+      g: "gamma"
     };
   },
   mounted() {
     this.background();
-    this.followMouse()
+    this.followMouse();
   },
   methods: {
     background() {
-      document.addEventListener("touchmove", function(e) {
-        e.preventDefault();
-      },{ passive: false });
+      document.addEventListener(
+        "touchmove",
+        function(e) {
+          e.preventDefault();
+        },
+        { passive: false }
+      );
       var c = document.getElementsByTagName("canvas")[0],
         x = c.getContext("2d"),
-        pr =  1,
+        pr =  window.devicePixelRatio,
         w = window.innerWidth,
         h = window.innerHeight,
         f = 90,
@@ -111,20 +117,28 @@ export default {
       // document.ontouchstart = i;
       i();
     },
-    followMouse(){
-      let centerX = window.screen.width/2;
-      let centerY = window.screen.height/2;
-      // window.addEventListener('deviceorientation',(e)=>{
-      //   // this.rotate = `rotate3d(${})`
-      // })
-      window.addEventListener('mousemove',(e)=>{
-        let deltaX = e.clientX - centerX;
-        let deltaY = e.clientY - centerY;
-        let maxRotate = 30
-        let rotateX = deltaX/500 * -maxRotate;
-        let rotateY = deltaY/500 * maxRotate;
-        this.rotate = `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`
-      })
+    followMouse() {
+      let centerX = window.screen.width / 2;
+      let centerY = window.screen.height / 2;
+      let maxRotate = 30;
+      window.addEventListener("deviceorientation", e => {
+        this.b = e.beta;
+        this.g = e.gamma;
+
+        let rotateX = (this.b / 90) * 60;
+        let rotateY = (this.g / 90) * -60;
+        this.rotate = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      if (!/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        window.addEventListener("mousemove", e => {
+          let deltaX = e.clientX - centerX;
+          let deltaY = e.clientY - centerY;
+
+          let rotateX = (deltaX / 500) * -maxRotate;
+          let rotateY = (deltaY / 500) * maxRotate;
+          this.rotate = `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`;
+        });
+      }
     }
   }
 };
@@ -156,15 +170,13 @@ export default {
   transition: 0.3s;
   cursor: pointer;
 }
-.nameImg img:hover{
-
+.nameImg img:hover {
   transform: scale(1.5);
-
 }
 
 .motto,
 .link {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI";
   font-size: 1rem;
   letter-spacing: 2px;
   color: #aaaaaa;

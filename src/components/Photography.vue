@@ -1,11 +1,16 @@
 <template>
 <div class="container">
+  <Menu></Menu>
     coming soon...
-</div>    
+</div>
 </template>
 <script>
+import Menu from './Menu'
 export default {
-    name:'Photography'
+    name:'Photography',
+    components:{
+      Menu
+    }
 }
 </script>
 <style scoped>

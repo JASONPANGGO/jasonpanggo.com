@@ -26,7 +26,7 @@ export default {
   name: "app",
   data() {
     return {
-      footage: "Jason Pang @CopyrightAll Rights Reserved"
+      footage: "Jason Pang @Copyright All Rights Reserved"
     };
   }
 };
@@ -62,6 +62,7 @@ body {
 
 
 .foot {
+  font-family: sans-serif;
   font-size: 12px;
   color: #bbbbbb;
   position: fixed;
