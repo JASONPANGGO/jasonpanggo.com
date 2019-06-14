@@ -3,7 +3,7 @@
     <div class="intro" ref="followTarget" :style="{transform:rotate}">
       <div class="nameImg">
         <img
-          src="../assets/jasonpang.png"
+          :src="nameImg"
           oncontextmenu="return false;"
           onselectstart="return false;"
         >
@@ -21,17 +21,34 @@
         </router-link>
       </div>
     </div>
+    <div class="foot">
+    <div class="contact">
+      <span class="sm">
+        <a href="https://weibo.cn/u/2395251203">
+          <i class="fa fa-weibo fa-2x"></i>
+        </a>
+        <a href>
+          <i class="fa fa-instagram fa-2x"></i>
+        </a>
+        <a href="https://github.com/JASONPANGGO">
+          <i class="fa fa-github fa-2x"></i>
+        </a>
+      </span>
+    </div>
+    {{footage}}
+  </div>
     <canvas id="canvas"></canvas>
   </div>
 </template>
 
 <script>
+var assets = require("../assets")
 export default {
   name: "Intro",
   data() {
     return {
       name: "JASON PANG",
-      nameImg: require("../assets/jasonpang.png"),
+      nameImg: assets.signature,
       link: [
         {
           path: "frontend",
@@ -52,7 +69,8 @@ export default {
       motto: "Design, Code, & Photography",
       rotate: "",
       b: "beta",
-      g: "gamma"
+      g: "gamma",
+      footage: "Jason Pang @Copyright All Rights Reserved"
     };
   },
   mounted() {
@@ -114,13 +132,13 @@ export default {
         return t > h || t < 0 ? y(p) : t;
       }
       document.onclick = i;
-      // document.ontouchstart = i;
       i();
     },
     followMouse() {
       let centerX = window.screen.width / 2;
       let centerY = window.screen.height / 2;
       let maxRotate = 30;
+      // 陀螺仪
       window.addEventListener("deviceorientation", e => {
         this.b = e.beta;
         this.g = e.gamma;
@@ -129,6 +147,7 @@ export default {
         let rotateY = (this.g / 90) * -60;
         this.rotate = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
+      // 鼠标
       if (!/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
         window.addEventListener("mousemove", e => {
           let deltaX = e.clientX - centerX;
@@ -235,5 +254,15 @@ img {
 canvas {
   position: fixed;
   z-index: -10;
+}
+
+.foot {
+  position: absolute;
+  font-family: sans-serif;
+  font-size: 12px;
+  color: #bbbbbb;
+  bottom: 5px;
+  width: 100%;
+  text-align: center;
 }
 </style>

@@ -1,23 +1,10 @@
 <template>
   <div id="app">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <router-view></router-view>
-    <div class="foot">
-      <div class="contact">
-        <span class="sm">
-          <a href="https://weibo.cn/u/2395251203">
-          <i class="fa fa-weibo fa-2x"></i>
-          </a>
-          <a href="">
-          <i class="fa fa-instagram fa-2x"></i>
-          </a>
-          <a href="https://github.com/JASONPANGGO">
-          <i class="fa fa-github fa-2x"></i>
-          </a>
-        </span>
-      </div>
-      {{footage}}
-    </div>
+    <transition name="fade-down">
+      <router-view></router-view>
+    </transition>
+    
   </div>
 </template>
 
@@ -35,6 +22,13 @@ export default {
 </script>
 
 <style>
+html,body{
+  cursor: url("https://jasonpanggo.com:8080/img/cursor.png"),auto;
+  overflow-x: hidden;
+}
+a{
+  /* cursor: url("https://jasonpanggo.com:8080/img/cursor-pointer.png"),auto; */
+}
 ::selection {
   background: #ff9632;
   color: #000;
@@ -61,15 +55,58 @@ body {
 }
 
 
-.foot {
-  font-family: sans-serif;
-  font-size: 12px;
-  color: #bbbbbb;
-  position: fixed;
-  bottom: 5px;
-  width: 100%;
-  text-align: center;
+/* 滑动切换动画 */
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  /* will-change: transform; */
+  transition: all 500ms;
+  position: absolute;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
 }
 
+/* 淡入淡出切换动画 */
+.fade-up-enter-active,
+.fade-up-leave-active,
+.fade-down-enter-active,
+.fade-down-enter-active{
+  transition:  all 500ms;
+}
 
+.fade-up-enter{
+  opacity: 1;
+  /* transform: scale(0.5); */
+  overflow: hidden;
+}
+.fade-up-leave-active{
+  opacity: 0;
+  transform: scale(1.5);
+  overflow: hidden;
+}
+.fade-down-enter{
+  opacity: 0;
+  /* transform: scale(0.5); */
+
+}
+.fade-down-leave-active{
+  opacity: 0;
+  /* transform: scale(0.5); */
+
+}
 </style>
