@@ -6,6 +6,8 @@ import Photography from './components/Photography.vue'
 import Design from './components/Design.vue'
 import About from './components/About.vue'
 import Sheron from './components/Sheron.vue'
+import HBDTOSheron from './components/HBDTOSheron.vue'
+
 const routes = [
     {path:'/', component: Intro},
     {path:'/frontend', component: Frontend},
@@ -13,6 +15,7 @@ const routes = [
     {path:'/design', component: Design},
     {path:'/about', component: About},
     {path:'/sheron', component: Sheron},
+    {path:'/HBDTOSheron', component: HBDTOSheron},
   ]
 
 Vue.use(VueRouter)
