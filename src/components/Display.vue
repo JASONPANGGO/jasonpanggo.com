@@ -50,6 +50,7 @@ export default {
   max-height: 70vh;
 }
 
+
 </style>
 
 

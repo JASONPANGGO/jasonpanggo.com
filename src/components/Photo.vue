@@ -54,6 +54,25 @@ img {
   height: 100%;
   transition: 0.3s all;
 }
+
+
+@media(max-width: 480px){
+  .container{
+    height: auto;
+  }
+
+  img{
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+  } 
+}
+
+/* .container {
+  width: 100vw;
+  height: 100vh;
+ background: radial-gradient(circle at 100vw 0, rgb(36,53,81), rgb(9,9,9));
+} */
 </style>
 
 

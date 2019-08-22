@@ -52,7 +52,7 @@ export default {
   /* flex-flow: wrap; */
   min-height: 800px;
   margin: auto;
-  margin-top: 230px;
+  margin-top: 100vh;
   margin-bottom: 0px;
   align-items: center;
 }
@@ -83,5 +83,11 @@ export default {
     color: rgb(0,0,0,0.6);
     margin-bottom: 50px;
     line-height: 30px;
+}
+
+@media (max-width: 480px) {
+  .mainContainer{
+    margin-top: 100vh;
+  }
 }
 </style>

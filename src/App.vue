@@ -23,12 +23,10 @@ export default {
 
 <style>
 html,body{
-  cursor: url("https://jasonpanggo.com:8080/img/cursor.png"),auto;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
-a{
-  /* cursor: url("https://jasonpanggo.com:8080/img/cursor-pointer.png"),auto; */
-}
+
 ::selection {
   background: #ff9632;
   color: #000;

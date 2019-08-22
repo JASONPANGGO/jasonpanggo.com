@@ -52,6 +52,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 100vh;
 }
 .album {
   display: flex;
@@ -65,6 +66,11 @@ export default {
   letter-spacing: 2px;
   margin-top: 50px;
   margin-bottom: 10px;
+}
+@media (max-width: 480px) {
+  .mainContainer{
+    margin-top: 100vh;
+  }
 }
 </style>
 

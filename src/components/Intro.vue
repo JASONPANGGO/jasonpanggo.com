@@ -88,7 +88,7 @@ export default {
       );
       var c = document.getElementsByTagName("canvas")[0],
         x = c.getContext("2d"),
-        pr =  window.devicePixelRatio,
+        pr =  window.devicePixelRatio || 1,
         w = window.innerWidth,
         h = window.innerHeight,
         f = 90,
@@ -145,7 +145,7 @@ export default {
 
         let rotateX = (this.b / 90) * 60;
         let rotateY = (this.g / 90) * -60;
-        this.rotate = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        this.rotate = ` perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
       // 鼠标
       if (!/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
@@ -153,9 +153,10 @@ export default {
           let deltaX = e.clientX - centerX;
           let deltaY = e.clientY - centerY;
 
-          let rotateX = (deltaX / 500) * -maxRotate;
-          let rotateY = (deltaY / 500) * maxRotate;
-          this.rotate = `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`;
+          let rotateX = (deltaX / 500) * maxRotate;
+          let rotateY = (deltaY / 500) * -maxRotate;
+
+          this.rotate = ` perspective(500px) rotateX(${rotateY}deg) rotateY(${rotateX}deg)`;
         });
       }
     }
@@ -174,6 +175,7 @@ export default {
   align-items: center;
 }
 .intro {
+  transform-style: preserve-3d;
   width: 500px;
   height: 300px;
   text-align: center;
@@ -190,7 +192,7 @@ export default {
   cursor: pointer;
 }
 .nameImg img:hover {
-  transform: scale(1.5);
+  transform: skew(20px)
 }
 
 .motto,
@@ -214,7 +216,6 @@ export default {
 
 .link:hover {
   color: black;
-  transition: 0.3s;
 }
 
 .link::after {

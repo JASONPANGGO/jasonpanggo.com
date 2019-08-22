@@ -32,6 +32,12 @@ export default {
   margin-bottom: 0px;
   justify-content: center;
 }
+
+@media (max-width: 480px) {
+  .mainContainer{
+    margin-top: 100vh;
+  }
+}
 </style>
 
 
