@@ -203,6 +203,7 @@ export default {
   color: #aaaaaa;
   text-align: center;
   height: 20px;
+  text-decoration: none;
 }
 
 .link {

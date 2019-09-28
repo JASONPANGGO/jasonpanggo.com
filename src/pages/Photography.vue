@@ -26,10 +26,10 @@
   </div>
 </template>
 <script>
-import Menu from "./Menu";
-import Photo from "./Photo";
-import Foot from "./Foot";
-import Display from "./Display";
+import Menu from "../components/Menu";
+import Photo from "../components/Photo";
+import Foot from "../components/Foot";
+import Display from "../components/Display";
 export default {
   name: "Photography",
   components: {

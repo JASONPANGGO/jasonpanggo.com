@@ -1,0 +1,21 @@
+.title {
+    font-size: 20px;
+    font-family: "Segoe UI";
+    margin-bottom: 10px;
+  }
+  
+  .project {
+    width: 50vw;
+    height: 20vw;
+    border: 1px solid #dddddd;
+    margin-top: 50px;
+  }
+  .project-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  

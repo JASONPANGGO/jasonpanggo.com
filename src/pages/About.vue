@@ -26,9 +26,8 @@
   </div>
 </template>
 <script>
-import Menu from "./Menu";
-// import Photo from './Photo'
-import Foot from "./Foot";
+import Menu from "../components/Menu";
+import Foot from "../components/Foot";
 var assets = require("../assets");
 export default {
   name: "About",

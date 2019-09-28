@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Intro from './components/Intro.vue'
-import Frontend from './components/Frontend.vue'
-import Photography from './components/Photography.vue'
-import Design from './components/Design.vue'
-import About from './components/About.vue'
-import Sheron from './components/Sheron.vue'
-import HBDTOSheron from './components/HBDTOSheron.vue'
+import Intro from './pages/Intro.vue'
+import Frontend from './pages/Frontend.vue'
+import Photography from './pages/Photography.vue'
+import Design from './pages/Design.vue'
+import About from './pages/About.vue'
+import Sheron from './pages/Sheron.vue'
+import HBDTOSheron from './pages/HBDTOSheron.vue'
 
 const routes = [
     {path:'/', component: Intro},
