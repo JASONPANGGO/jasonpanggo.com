@@ -14,6 +14,7 @@
       </span>
     </div>
     {{footage}}
+    <a href="http://beian.miit.gov.cn">{{ICP}}</a>
   </div>
 </template>
 <script>
@@ -21,13 +22,14 @@ export default {
   name: "Foot",
   data() {
     return {
-      footage: "Jason Pang @Copyright All Rights Reserved"
+      footage: "Jason Pang @Copyright All Rights Reserved",
+      ICP: "粤ICP备19075378号"
     };
   }
 };
 </script>
 <style scoped>
-.foot{
+.foot {
   /* position: relative; */
   font-family: sans-serif;
   font-size: 12px;
@@ -40,18 +42,17 @@ export default {
   margin: 0;
   padding-top: 80px;
 }
-.contact{
-
+.contact {
 }
-.foot a{
+.foot a {
   color: white;
 }
 
-.sm:hover a{
+.sm:hover a {
   color: gray;
 }
 
-.foot a:hover{
+.foot a:hover {
   color: white;
 }
 </style>

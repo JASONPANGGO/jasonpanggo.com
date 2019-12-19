@@ -1,26 +1,42 @@
 <template>
   <div class="project-container">
-    <div class="title">2048</div>
+    <el-dialog
+      title="Submit your score!"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :fullscreen="mobileSize"
+    >
+      <el-form>
+        Your Score:
+        <el-tag type="info">{{score}}</el-tag>
+        <el-form-item label="Your Name:">
+          <el-input v-model="name" placeholder="please type in your nickname..." />
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">cancel</el-button>
+        <el-button type="primary" @click="submit">submit</el-button>
+      </span>
+    </el-dialog>
+
+    <div class="title"></div>
+
     <div class="project">
       <div class="control" :class="{mobileSize: mobileSize}">
-        <div class="con">
-          score: {{score}}
-          <div class="plus" :class="{fadeUp: plus}">+{{plus}}</div>
-        </div>
+        <el-tag type="info" id="scoreTag">{{score}}</el-tag>
+        <div class="plus" :class="{fadeUp: plus}">+{{plus}}</div>
 
-        <el-tag type="danger" v-if="lose">GAME OVER</el-tag>
+        <el-tag type="danger" v-if="lose" class="status">GAME OVER</el-tag>
 
-        <el-tag type="info" v-if="!lose">TRY TO MAKE A 2048</el-tag>
+        <el-tag type="info" v-if="!lose" class="status">MAKE 2048</el-tag>
 
-        <el-button
-          class="restart"
-          v-for="(dir, index) in control"
-          :key="index"
-          @click="move(dir)"
-          type="info"
-          icon="el-icon-refresh-right"
-          circle
-        ></el-button>
+        <el-button @click="toggleRank" class="control-button rankListButton" type="info" circle>
+          <i class="el-icon-medal-1"></i>
+        </el-button>
+        <el-button class="control-button" @click="move('restart')" type="info" icon circle>
+          <i class="el-icon-refresh-right"></i>
+        </el-button>
       </div>
       <div
         class="gameBoard"
@@ -39,20 +55,30 @@
         </div>
       </div>
       <div class="msg">{{msg}}</div>
+      <div class="rankListCover" v-if="rankList" @click="toggleRank">
+        <div class="rankList">
+          <div class="user" v-for="(user, index) in users" :key="index">
+            <div>{{index+1}}. {{user.name}}</div>
+            <div>{{user.score}}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Game2048",
   data() {
     return {
+      name: "",
       square: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
       control: ["restart"],
-      colorRadtio1: 12,
-      colorRadtio2: 9,
-      colorRadtio3: 10,
+      colorRadtio1: 10,
+      colorRadtio2: 10,
+      colorRadtio3: 0,
       score: 0,
       lose: false,
       plus: "",
@@ -60,7 +86,14 @@ export default {
       startX: null,
       startY: null,
       mobileSize: false,
-      timer: null
+      timer: null,  
+      users: [],
+      dialogVisible: false,
+      dialogWidth: "30%",
+      rankList: false,
+      ip: "",
+      latitude: "",
+      longitude: ""
     };
   },
   computed: {
@@ -82,31 +115,94 @@ export default {
   mounted() {
     this.randomFill();
     document.onkeydown = e => {
-      e.preventDefault();
       let key = e.keyCode;
       switch (key) {
         case 37:
+          e.preventDefault();
           this.move("left");
           break;
         case 38:
+          e.preventDefault();
           this.move("up");
           break;
         case 39:
+          e.preventDefault();
           this.move("right");
           break;
         case 40:
+          e.preventDefault();
           this.move("down");
           break;
         default:
           break;
       }
     };
-    // console.log(window.innerWidth);
-    if (window.innerWidth < 400) {
+    if (window.navigator.userAgent.search(/Android|iPhone/g) !== -1) {
+      console.log("移动端");
       this.mobileSize = true;
+      this.dialogWidth = "100%";
+    } else {
+      console.log("PC端");
     }
+
+    this.getRankList();
+    this.getIp();
   },
   methods: {
+    getlocationpoint() {
+      let dataThis = this;
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          dataThis.latitude = position.coords.latitude; //获取纬度
+          dataThis.longitude = position.coords.longitude; //获取经度
+        });
+      } else {
+        alert("不支持定位功能");
+      }
+    },
+    onInput(e) {
+      console.log(e);
+      this.nameInput = e;
+    },
+    toggleRank() {
+      if (!this.rankList) this.getRankList();
+      this.rankList = !this.rankList;
+    },
+    getIp() {
+      axios.get("https://jasonpanggo.com/getIP").then(e => {
+        this.ip = e.data;
+      });
+    },
+    submit() {
+      axios
+        .post("https://jasonpanggo.com/game2048/submit", {
+          name: this.name,
+          score: this.score,
+          location: this.ip
+        })
+        .then(res => {
+          if (res.data == "ok") {
+            this.dialogVisible = false;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    getRankList() {
+      axios
+        .get("https://jasonpanggo.com/game2048/list")
+        .then(res => {
+          console.log(res);
+          let data = res.data;
+          data.sort((a, b) => b.score - a.score);
+          console.log(data);
+          this.users = res.data;
+        })
+        .catch(err => {
+          if (err) console.error(err);
+        });
+    },
     startSlide(e) {
       e.preventDefault();
       this.startX = e.touches[0].clientX;
@@ -187,12 +283,12 @@ export default {
        */
       function checkLose(arr) {
         if (!arr.some(row => row.indexOf(0) !== -1)) {
-          for (let i = 0; i < arr.length - 1; i++) {
-            for (let j = 0; j < arr[i].length - 1; j++) {
-              if (j + 1 <= arr[i].length) {
+          for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+              if (j + 1 < arr[i].length) {
                 if (arr[i][j] == arr[i][j + 1]) return false;
               }
-              if (i + 1 <= arr.length) {
+              if (i + 1 < arr.length) {
                 if (arr[i][j] == arr[i + 1][j]) return false;
               }
             }
@@ -236,6 +332,7 @@ export default {
           default:
             break;
         }
+
         if (dataThis.timer) {
           dataThis.plus = "";
           clearTimeout(dataThis.timer);
@@ -255,6 +352,7 @@ export default {
       }
 
       if (checkLose(this.square)) {
+        this.dialogVisible = true;
         this.lose = true;
       }
     },
@@ -287,6 +385,7 @@ export default {
 <style scoped>
 @import "../css/project.css";
 .project {
+  margin-top: 0;
   border: none;
   height: 500px;
   display: flex;
@@ -327,11 +426,13 @@ export default {
   color: black;
 }
 .control {
-  width: 400px;
+  width: 420px;
   height: 40px;
-  margin: 10px;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 }
 .control i {
@@ -340,24 +441,40 @@ export default {
 }
 .con {
   display: flex;
-  line-height: 1.2em;
   text-align: center;
   margin: 10px;
   font-size: 1.2em;
   color: rgb(10, 10, 10);
+  font-size: 0.8em;
+}
+#scoreTag {
+  position: absolute;
+  left: 0;
 }
 .cell0 {
   opacity: 0;
 }
-.restart {
-  width: 40px;
-  height: 40px;
+.control-button {
+  position: absolute;
+  max-width: 40px;
+  max-height: 40px;
   text-align: center;
+  font-size: 1em;
+  display: flex;
+  justify-content: center;
+  right: 0;
+}
+.rankListButton {
+  right: 50px;
+}
+.control-button i::before {
+  display: block !important;
+  transform: translateY(-4px) !important;
 }
 .plus {
   font-size: 0.7em;
   opacity: 0;
-  margin-left: 5px;
+  margin-left: 50px;
 }
 .fadeUp {
   animation: 0.5s fade;
@@ -365,7 +482,7 @@ export default {
 @keyframes fade {
   0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
   10% {
     opacity: 1;
@@ -375,7 +492,7 @@ export default {
   }
   100% {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(-10px);
   }
 }
 .msg {
@@ -384,5 +501,52 @@ export default {
 }
 .mobileSize {
   transform: scale(0.8);
+}
+.rankListCover {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rankList {
+  width: 200px;
+  height: 400px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 5px;
+  right: 50%;
+  margin-right: -100px;
+  transition: 0.5s all;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.rankList .user {
+  width: 100%;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  display: flex;
+  justify-content: space-between;
+}
+.status {
+  position: absolute;
+  left: 50%;
+  width: 100px;
+  text-align: center;
+  margin-left: -50px;
+}
+.system-scrollbar {
+  overflow-x: hidden;
+}
+el-button:active {
+  background: #3a8ee6;
+  border-color: #3a8ee6;
+  color: #fff;
 }
 </style>

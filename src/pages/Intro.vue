@@ -2,11 +2,7 @@
   <div class="center-container">
     <div class="intro" ref="followTarget" :style="{transform:rotate}">
       <div class="nameImg">
-        <img
-          :src="nameImg"
-          oncontextmenu="return false;"
-          onselectstart="return false;"
-        >
+        <img :src="nameImg" oncontextmenu="return false;" onselectstart="return false;" />
       </div>
       <div class="motto">{{motto}}</div>
       <div class="linkto">
@@ -16,33 +12,34 @@
           :key="index"
           class="link"
         >
-          <img :src="item.img" class="logo">
+          <img :src="item.img" class="logo" />
           {{item.name}}
         </router-link>
       </div>
     </div>
     <div class="foot">
-    <div class="contact">
-      <span class="sm">
-        <a href="https://weibo.cn/u/2395251203">
-          <i class="fa fa-weibo fa-2x"></i>
-        </a>
-        <a href>
-          <i class="fa fa-instagram fa-2x"></i>
-        </a>
-        <a href="https://github.com/JASONPANGGO">
-          <i class="fa fa-github fa-2x"></i>
-        </a>
-      </span>
+      <div class="contact">
+        <span class="sm">
+          <a href="https://weibo.cn/u/2395251203">
+            <i class="fa fa-weibo fa-2x"></i>
+          </a>
+          <a href>
+            <i class="fa fa-instagram fa-2x"></i>
+          </a>
+          <a href="https://github.com/JASONPANGGO">
+            <i class="fa fa-github fa-2x"></i>
+          </a>
+        </span>
+      </div>
+      {{footage}}
+      <a href="http://beian.miit.gov.cn">{{ICP}}</a>
     </div>
-    {{footage}}
-  </div>
     <canvas id="canvas"></canvas>
   </div>
 </template>
 
 <script>
-var assets = require("../assets")
+var assets = require("../assets");
 export default {
   name: "Intro",
   data() {
@@ -70,7 +67,8 @@ export default {
       rotate: "",
       b: "beta",
       g: "gamma",
-      footage: "Jason Pang @Copyright All Rights Reserved"
+      footage: "Jason Pang @Copyright All Rights Reserved",
+      ICP: "粤ICP备19075378号"
     };
   },
   mounted() {
@@ -88,7 +86,7 @@ export default {
       );
       var c = document.getElementsByTagName("canvas")[0],
         x = c.getContext("2d"),
-        pr =  window.devicePixelRatio || 1,
+        pr = window.devicePixelRatio || 1,
         w = window.innerWidth,
         h = window.innerHeight,
         f = 90,
@@ -192,7 +190,7 @@ export default {
   cursor: pointer;
 }
 .nameImg img:hover {
-  transform: skew(20px)
+  transform: skew(20px);
 }
 
 .motto,
@@ -266,5 +264,9 @@ canvas {
   bottom: 5px;
   width: 100%;
   text-align: center;
+}
+
+a {
+  color: #bbbbbb;
 }
 </style>
